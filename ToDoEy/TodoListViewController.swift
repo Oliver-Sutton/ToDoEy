@@ -12,9 +12,15 @@ class TodoListViewController: UITableViewController {
 
     var itemArray: [String] = ["Get Milk", "Cook Dinner", "Eat Dinner"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
         
     }
     
@@ -62,6 +68,10 @@ class TodoListViewController: UITableViewController {
             
             if textField.text! != "" {
                 self.itemArray.append(textField.text!)
+                
+                // Saves the data to user defaults allowing the user to have persistent data.
+                self.defaults.set(self.itemArray, forKey: "TodoListArray")
+                
             }
             
             self.tableView.reloadData()
